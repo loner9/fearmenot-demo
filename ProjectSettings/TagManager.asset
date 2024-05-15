@@ -47,11 +47,17 @@ TagManager:
   - name: World
     uniqueID: 1795308349
     locked: 0
+  - name: Foreground
+    uniqueID: 2860967151
+    locked: 0
   - name: FX
     uniqueID: 476391717
     locked: 0
   - name: Character
     uniqueID: 704733703
+    locked: 0
+  - name: Enemy
+    uniqueID: 257102629
     locked: 0
   - name: Item
     uniqueID: 2032924833
