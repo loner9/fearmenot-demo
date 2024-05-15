@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerControl : MonoBehaviour
 {
     public Rigidbody2D rb;
     [SerializeField] float moveSpeed = 5f;
@@ -18,18 +20,29 @@ public class PlayerMovement : MonoBehaviour
     public GameObject cameraFollowGo;
     public Animator animator;
     private bool isLanding = false;
+    private BoxCollider2D hitbox;
+    private bool isCoolDown = false;
+    private float cdTime = 0.5f;
 
     // Start is called before the first frame update
     void Start()
     {
         cameraFollowObject = cameraFollowGo.GetComponent<CameraFollowObject>();
         IsFacingRight = true;
+        hitbox = transform.Find("AttackHitbox").GetComponent<BoxCollider2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        rb.velocity = new Vector2(horizontalMovement * moveSpeed, rb.velocity.y);
+        if (isCoolDown == false)
+        {
+            rb.velocity = new Vector2(horizontalMovement * moveSpeed, rb.velocity.y);
+        }
+        else
+        {
+            rb.velocity = Vector2.zero;
+        }
 
         animator.SetFloat("yVelocity", rb.velocity.y);
         animator.SetFloat("magnitude", rb.velocity.magnitude);
@@ -66,6 +79,17 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public void attack(InputAction.CallbackContext context)
+    {
+        if (isGrounded() && isCoolDown == false)
+        {
+            animator.SetTrigger("attacking");
+            Invoke("ActivateHitbox", 0.1f);
+            Invoke("DeactivateHitbox", 0.4f);
+            StartCoroutine(CoolD());
+        }
+    }
+
     private bool isGrounded()
     {
         if (Physics2D.OverlapBox(groundCheckPos.position, groundCheckSize, 0, groundLayer))
@@ -79,6 +103,13 @@ public class PlayerMovement : MonoBehaviour
         }
         isLanding = false;
         return false;
+    }
+
+    private IEnumerator CoolD()
+    {
+        isCoolDown = true;
+        yield return new WaitForSeconds(cdTime);
+        isCoolDown = false;
     }
 
     private void turnCheck()
@@ -111,6 +142,16 @@ public class PlayerMovement : MonoBehaviour
 
             cameraFollowObject.callTurn();
         }
+    }
+
+    void ActivateHitbox()
+    {
+        hitbox.gameObject.SetActive(true);
+    }
+
+    void DeactivateHitbox()
+    {
+        hitbox.gameObject.SetActive(false);
     }
 
     private void OnDrawGizmosSelected()

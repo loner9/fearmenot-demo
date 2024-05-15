@@ -7,12 +7,12 @@ public class CameraFollowObject : MonoBehaviour
     [SerializeField] private Transform playerTransform;
     [SerializeField] private float flipRotationTime = 0.7f;
     private Coroutine turnCoroutine;
-    private PlayerMovement player;
+    private PlayerControl player;
     private bool isFacingRight;
     // Start is called before the first frame update
     void Start()
     {
-        player = playerTransform.GetComponent<PlayerMovement>();
+        player = playerTransform.GetComponent<PlayerControl>();
         isFacingRight = player.IsFacingRight;
     }
 
