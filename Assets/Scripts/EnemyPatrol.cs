@@ -19,6 +19,11 @@ public class EnemyPatrol : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        patrol();
+    }
+
+    void patrol()
+    {
         Vector2 point = currentPoint.position - transform.position;
         if (currentPoint == pointB.transform)
         {
