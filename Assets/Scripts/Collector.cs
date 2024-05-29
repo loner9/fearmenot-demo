@@ -6,10 +6,14 @@ public class Collector : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        IItem item = collider.GetComponent<IItem>();
-        if (item != null)
+        if (collider.GetType() == typeof(CircleCollider2D))
         {
-            item.Collect();
+            IItem item = collider.GetComponent<IItem>();
+            if (item != null)
+            {
+                item.Collect();
+            }
         }
+
     }
 }

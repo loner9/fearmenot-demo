@@ -42,15 +42,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Run",
-                    "type": "PassThrough",
-                    "id": "ab3ff2ff-2908-48a7-8e2d-2ca0927b77bb",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Attack",
                     "type": "Button",
                     "id": "0da4c3aa-7356-4754-be93-3291ed222dba",
@@ -258,72 +249,6 @@
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "Vector 2 With Modifiers",
-                    "id": "558a76a4-a64c-43dc-935c-7bb486e56205",
-                    "path": "Vector2WithModifiers",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Run",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "axisX",
-                    "id": "6e9bd629-611a-41db-9085-96f696a768e6",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Run",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "axisX",
-                    "id": "9dc16a78-4cca-43ea-b5dc-2cafa7795471",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Run",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "axisY",
-                    "id": "2e678793-f5ca-48a0-9189-6d9581a888a6",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Run",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "axisY",
-                    "id": "8b2f5dbc-3882-44bb-8527-3b78285b19e1",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Run",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "modifier",
-                    "id": "9f465473-15e9-4892-8cf2-63401188ccda",
-                    "path": "<Keyboard>/leftShift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Run",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 },
                 {
                     "name": "",

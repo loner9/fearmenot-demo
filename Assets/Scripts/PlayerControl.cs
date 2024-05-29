@@ -9,7 +9,7 @@ public class PlayerControl : MonoBehaviour
 {
     public Rigidbody2D rb;
     [SerializeField] float moveSpeed = 5f;
-    float horizontalMovement;
+    [HideInInspector] public float horizontalMovement;
 
     float jumpPower = 5f;
     public Transform groundCheckPos;
@@ -24,6 +24,12 @@ public class PlayerControl : MonoBehaviour
     private bool isCoolDown = false;
     private float cdTime = 0.5f;
 
+    public float kbForce;
+    public float KbCounter;
+    public float KbTotalTime;
+    public bool knockFromRight;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,14 +41,6 @@ public class PlayerControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isCoolDown == false)
-        {
-            rb.velocity = new Vector2(horizontalMovement * moveSpeed, rb.velocity.y);
-        }
-        else
-        {
-            rb.velocity = Vector2.zero;
-        }
 
         animator.SetFloat("yVelocity", rb.velocity.y);
         animator.SetFloat("magnitude", rb.velocity.magnitude);
@@ -51,6 +49,34 @@ public class PlayerControl : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (KbCounter <= 0)
+        {
+            rb.velocity = new Vector2(horizontalMovement * moveSpeed, rb.velocity.y);
+            animator.SetBool("isHit", false);
+        }
+        else
+        {
+            if (knockFromRight)
+            {
+                rb.velocity = new Vector2(-kbForce, 2);
+            }
+            else if (!knockFromRight)
+            {
+                rb.velocity = new Vector2(kbForce, 2);
+            }
+            // else if(isCoolDown)
+            // {
+            //     rb.velocity = Vector2.zero;
+            // }
+            animator.SetBool("isHit", true);
+            KbCounter -= Time.deltaTime;
+        }
+
+        if (isCoolDown)
+        {
+            rb.velocity = Vector2.zero;
+        }
+
         if (horizontalMovement > 0 || horizontalMovement < 0)
         {
             turnCheck();
@@ -59,7 +85,9 @@ public class PlayerControl : MonoBehaviour
 
     public void move(InputAction.CallbackContext context)
     {
+
         horizontalMovement = context.ReadValue<Vector2>().x;
+
     }
 
     public void jump(InputAction.CallbackContext context)

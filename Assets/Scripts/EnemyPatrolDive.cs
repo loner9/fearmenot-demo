@@ -15,7 +15,7 @@ public class EnemyPatrolDive : MonoBehaviour
     RaycastHit2D hit;
     Vector3 direction;
     public LayerMask playerMask;
-    int cue = 1;
+    [HideInInspector] public int cue = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -91,7 +91,7 @@ public class EnemyPatrolDive : MonoBehaviour
             direction = (transform.right - transform.up).normalized;
         }
         cue *= -1;
-        localScale.x *= cue;
+        localScale.x = cue;
         transform.localScale = localScale;
     }
 
@@ -99,6 +99,23 @@ public class EnemyPatrolDive : MonoBehaviour
     {
         if (collision.collider.name == "Ground" || collision.collider.name == "Char")
         {
+            // Debug.Log(collision.collider.GetType());
+            if (collision.collider.GetType() == typeof(CapsuleCollider2D))
+            {
+                PlayerControl player = collision.collider.GetComponent<PlayerControl>();
+                player.KbCounter = player.KbTotalTime;
+                if (collision.transform.position.x <= transform.position.x)
+                {
+                    player.knockFromRight = true;
+                }
+                else if (collision.transform.position.x > transform.position.x)
+                {
+                    player.knockFromRight = false;
+                }
+
+                PlayerHealth playerHealth = collision.collider.GetComponent<PlayerHealth>();
+                playerHealth.takeDamage(1, new Vector2(cue, 0f));
+            }
             Destroy(gameObject);
         }
     }
