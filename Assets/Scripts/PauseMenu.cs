@@ -7,6 +7,9 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] private GameObject PauseMenuPanel;
+    [SerializeField] private GameObject OptionPanel;
+    [SerializeField] private GameObject NotesPanel;
+    [SerializeField] private GameObject InventoryPanel;
     [SerializeField] private Button[] buttons;
 
     public static PauseMenu Instance { get; private set; }
@@ -15,7 +18,7 @@ public class PauseMenu : MonoBehaviour
     void Start()
     {
         Instance = this;
-
+    
         // Pause();
     }
 
@@ -32,6 +35,7 @@ public class PauseMenu : MonoBehaviour
         //     // buttons[0].interactable = true;
         //     buttons[1].interactable = true;
         // }
+        buttons[2].GetComponent<Button>().Select();
         PauseMenuPanel.SetActive(true);
         Time.timeScale = 0f;
     }
@@ -49,5 +53,26 @@ public class PauseMenu : MonoBehaviour
     public void GoToMainMenu () 
     {
         SceneManager.LoadSceneAsync(0);
+    }
+
+    public void Option () 
+    {
+        OptionPanel.SetActive(true);
+        NotesPanel.SetActive(false);
+        InventoryPanel.SetActive(false);
+    }
+
+    public void Notes () 
+    {
+        OptionPanel.SetActive(false);
+        NotesPanel.SetActive(true);
+        InventoryPanel.SetActive(false);
+    }
+
+    public void Inventory () 
+    {
+        OptionPanel.SetActive(false);
+        NotesPanel.SetActive(false);
+        InventoryPanel.SetActive(true);
     }
 }
