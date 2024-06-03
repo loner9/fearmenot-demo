@@ -4,12 +4,20 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    int foodAmount;
+    int apelAmount;
+    int drinkAmount;
+    bool isSunShardCollected = false;
+    public bool isLanternCollected = false;
+    bool isCompassCollected = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        foodAmount = 0;
+        apelAmount = 0;
+        drinkAmount = 0;
         Food.onFoodCollect += increaseFoodAmount;
+        Lantern.onLanternCollect += setTrueLantern;
+        SunShard.onSunCollect += setTrueSun;
     }
 
     // Update is called once per frame
@@ -18,9 +26,25 @@ public class GameController : MonoBehaviour
 
     }
 
-    void increaseFoodAmount(int amount)
+    void setTrueLantern(bool value)
     {
-        foodAmount += amount;
-        Debug.Log("food : " + foodAmount);
+        isLanternCollected = value;
+    }
+
+    void setTrueSun(bool value)
+    {
+        isSunShardCollected = value;
+    }
+    void increaseFoodAmount(int amount, string type)
+    {
+        if (type.Equals("apel"))
+        {
+            apelAmount += amount;
+
+        }
+        else if (type.Equals("drink"))
+        {
+            drinkAmount += amount;
+        }
     }
 }
