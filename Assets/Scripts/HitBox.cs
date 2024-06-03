@@ -9,7 +9,13 @@ public class HitBox : MonoBehaviour
         if (collision.CompareTag("Enemy"))
         {
             //todo : improve this code to trigger animation effect on enemy
-            Destroy(collision.gameObject);
+            if (collision.name.Contains("Dive"))
+            {
+                EnemyPatrolDive enemy = collision.GetComponent<EnemyPatrolDive>();
+                enemy.isDead = true;
+                enemy.disable();
+            }
+            // Destroy(collision.gameObject);
         }
     }
 }
