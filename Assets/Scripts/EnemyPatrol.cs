@@ -14,12 +14,14 @@ public class EnemyPatrol : MonoBehaviour
     RaycastHit2D hit;
     public LayerMask playerMask;
     Vector3 direction;
+    Animator animator;
     [HideInInspector] public int cue = 1;
     // Start is called before the first frame update
     void Start()
     {
         direction = transform.right.normalized;
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         capsuleCollider2D = GetComponent<CapsuleCollider2D>();
         currentPoint = pointB.transform;
     }
@@ -31,18 +33,11 @@ public class EnemyPatrol : MonoBehaviour
         {
             patrol();
         }
+        else
+        {
+            rb.velocity = Vector2.zero;
+        }
     }
-
-    // private void FixedUpdate()
-    // {
-    //     hit = Physics2D.Raycast(transform.position, direction, 0.3f, playerMask);
-    //     Debug.DrawRay(transform.position, direction * 0.3f, Color.red);
-
-    //     if (hit.collider != null)
-    //     {
-    //         isHit = true;
-    //     }
-    // }
 
     void patrol()
     {
@@ -58,14 +53,16 @@ public class EnemyPatrol : MonoBehaviour
 
         if (Vector2.Distance(transform.position, currentPoint.position) < 0.8f && currentPoint == pointB.transform)
         {
-            flip();
+            Debug.Log("is atas");
             currentPoint = pointA.transform;
+            flip();
         }
 
         if (Vector2.Distance(transform.position, currentPoint.position) < 0.8f && currentPoint == pointA.transform)
         {
-            flip();
+            Debug.Log("is bawah");
             currentPoint = pointB.transform;
+            flip();
         }
 
     }
@@ -73,14 +70,6 @@ public class EnemyPatrol : MonoBehaviour
     private void flip()
     {
         Vector3 localScale = transform.localScale;
-        if (cue == 1)
-        {
-            direction = (transform.right * -1).normalized;
-        }
-        else if (cue == -1)
-        {
-            direction = transform.right.normalized;
-        }
         cue *= -1;
         localScale.x = cue;
         transform.localScale = localScale;
@@ -117,7 +106,7 @@ public class EnemyPatrol : MonoBehaviour
                     player.knockFromRight = false;
                 }
 
-                Invoke("flip", 0.31f);
+                // Invoke("flip", 0.5f);
                 StartCoroutine(onHitEffect(0.3f));
 
                 PlayerHealth playerHealth = collision.collider.GetComponent<PlayerHealth>();
@@ -143,6 +132,7 @@ public class EnemyPatrol : MonoBehaviour
         yield return new WaitForSeconds(delay);
         capsuleCollider2D.enabled = true;
         isHit = false;
+        Invoke("flip", 0.5f);
 
     }
     private void OnDrawGizmos()

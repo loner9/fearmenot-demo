@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class EnemyPatrolDive : MonoBehaviour
 {
@@ -11,30 +12,41 @@ public class EnemyPatrolDive : MonoBehaviour
     private Transform currentPoint;
     [SerializeField] float speed;
     bool isColliding = false;
+    [HideInInspector] public bool isDead = false;
     bool isFacingRight;
     RaycastHit2D hit;
     Vector3 direction;
     public LayerMask playerMask;
+    BoxCollider2D boxCollider;
+    Animator animator;
     [HideInInspector] public int cue = 1;
+    [Header("Loot")]
+    public List<LootItem> lootTable = new List<LootItem>();
     // Start is called before the first frame update
     void Start()
     {
         direction = (transform.right - transform.up).normalized;
         rb = GetComponent<Rigidbody2D>();
         currentPoint = pointB.transform;
+        boxCollider = GetComponent<BoxCollider2D>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!isColliding)
+        if (!isDead)
         {
-            patrol();
+            if (!isColliding)
+            {
+                patrol();
+            }
+            else
+            {
+                dive();
+            }
         }
-        else
-        {
-            dive();
-        }
+
     }
 
     private void FixedUpdate()
@@ -97,7 +109,7 @@ public class EnemyPatrolDive : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.name == "Ground" || collision.collider.name == "Char")
+        if (collision.collider.name.Contains("Ground") || collision.collider.name == "Char")
         {
             // Debug.Log(collision.collider.GetType());
             if (collision.collider.GetType() == typeof(CapsuleCollider2D))
@@ -116,14 +128,49 @@ public class EnemyPatrolDive : MonoBehaviour
                 PlayerHealth playerHealth = collision.collider.GetComponent<PlayerHealth>();
                 playerHealth.takeDamage(1, new Vector2(cue, 0f));
             }
-            Destroy(gameObject);
+            // boxCollider.enabled = false;
+            isDead = true;
+            disable();
         }
     }
 
-    private void OnDrawGizmos()
+    public void disable()
     {
-        Gizmos.DrawWireSphere(pointA.transform.position, 0.8f);
-        Gizmos.DrawWireSphere(pointB.transform.position, 0.8f);
-        Gizmos.DrawLine(pointA.transform.position, pointB.transform.position);
+        rb.velocity = Vector2.zero;
+        rb.gravityScale = 0.0f;
+        boxCollider.enabled = false;
+        rb.isKinematic = true;
+        animator.Play("dead");
     }
+    void begone()
+    {
+        dropItems();
+        Destroy(gameObject);
+    }
+
+    void dropItems()
+    {
+        foreach (LootItem item in lootTable)
+        {
+            if (Random.Range(0f, 100f) <= item.dropChance)
+            {
+                instatiateLoot(item.itemPrefab);
+            }
+        }
+    }
+
+    void instatiateLoot(GameObject loot)
+    {
+        if (loot)
+        {
+            Instantiate(loot, transform.position, Quaternion.identity);
+        }
+    }
+
+    // private void OnDrawGizmos()
+    // {
+    //     Gizmos.DrawWireSphere(pointA.transform.position, 0.8f);
+    //     Gizmos.DrawWireSphere(pointB.transform.position, 0.8f);
+    //     Gizmos.DrawLine(pointA.transform.position, pointB.transform.position);
+    // }
 }
