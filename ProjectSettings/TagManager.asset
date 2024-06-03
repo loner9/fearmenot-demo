@@ -17,7 +17,7 @@ TagManager:
   - Player
   - Item
   - Point
-  - 
+  - InvisibleWall
   - 
   - 
   - 
@@ -51,14 +51,14 @@ TagManager:
   - name: Foreground
     uniqueID: 2860967151
     locked: 0
-  - name: Character
-    uniqueID: 704733703
-    locked: 0
   - name: Enemy
     uniqueID: 257102629
     locked: 0
   - name: Item
     uniqueID: 2032924833
+    locked: 0
+  - name: Character
+    uniqueID: 704733703
     locked: 0
   - name: FX
     uniqueID: 476391717
