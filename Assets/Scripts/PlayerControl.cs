@@ -4,18 +4,20 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 
+public enum interactState { READY, NOT }
 public class PlayerControl : MonoBehaviour
 {
     public Rigidbody2D rb;
     [SerializeField] float moveSpeed = 5f;
     [HideInInspector] public float horizontalMovement;
 
-    float jumpPower = 5f;
+    float jumpPower = 6f;
     public Transform groundCheckPos;
     public Vector2 groundCheckSize = new Vector2(0.5f, 0.05f);
     public LayerMask groundLayer;
-    [HideInInspector] public bool IsFacingRight;
+    public bool IsFacingRight;
     private CameraFollowObject cameraFollowObject;
     public GameObject cameraFollowGo;
     public Animator animator;
@@ -28,23 +30,44 @@ public class PlayerControl : MonoBehaviour
     public float KbCounter;
     public float KbTotalTime;
     public bool knockFromRight;
+    GameObject playerLight;
+    GameController gameController;
 
+    [HideInInspector] public bool isIdle = false;
+
+    [HideInInspector] public bool doInteractAct = false;
+
+    public interactState interact;
+
+    private void Awake()
+    {
+        gameController = GameObject.Find("GameController").GetComponent<GameController>();
+        if (gameController.isLanternCollected)
+        {
+            playerLight.gameObject.SetActive(true);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
     {
         cameraFollowObject = cameraFollowGo.GetComponent<CameraFollowObject>();
-        IsFacingRight = true;
         hitbox = transform.Find("AttackHitbox").GetComponent<BoxCollider2D>();
+        interact = interactState.NOT;
+        playerLight = transform.Find("FlashLight").gameObject;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-
         animator.SetFloat("yVelocity", rb.velocity.y);
         animator.SetFloat("magnitude", rb.velocity.magnitude);
-
+        isIdle = rb.velocity.magnitude < 0.1 ? true : false;
+        if (gameController.isLanternCollected)
+        {
+            playerLight.gameObject.SetActive(true);
+        }
     }
 
     private void FixedUpdate()
@@ -118,6 +141,14 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
+    public void interactAction(InputAction.CallbackContext context)
+    {
+        if (doInteractAct)
+        {
+            interact = interactState.READY;
+        }
+    }
+
     private bool isGrounded()
     {
         if (Physics2D.OverlapBox(groundCheckPos.position, groundCheckSize, 0, groundLayer))
@@ -180,6 +211,11 @@ public class PlayerControl : MonoBehaviour
     void DeactivateHitbox()
     {
         hitbox.gameObject.SetActive(false);
+    }
+
+    public void lanternOn()
+    {
+        playerLight.gameObject.SetActive(true);
     }
 
     private void OnDrawGizmosSelected()
