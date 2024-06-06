@@ -421,8 +421,7 @@ MonoBehaviour:
   - 
   - Miaw tersenyum. Dia berjanji pada dirinya sendiri, inilah awal dari segala yang
     baik.
-  - Perjalanan penuh rintangan telah mengantarkannya menuju masa depan yang cerah.Perjalanan
-    penuh rintangan telah mengantarkannya menuju masa depan yang cerah.
+  - Perjalanan penuh rintangan telah mengantarkannya menuju masa depan yang cerah.
   - 
   textSpeed: 0.1
   audioSources:
@@ -632,7 +631,7 @@ AudioSource:
   m_GameObject: {fileID: 1392386691}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 5229033248085179177, guid: 69fe056f8f9044369970259d1a515746, type: 2}
   m_audioClip: {fileID: 8300000, guid: 8fbc54a739e224eb9bb0c7453803ca09, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.1
@@ -760,7 +759,7 @@ AudioSource:
   m_GameObject: {fileID: 1794399384}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 5229033248085179177, guid: 69fe056f8f9044369970259d1a515746, type: 2}
   m_audioClip: {fileID: 8300000, guid: 57a047858ad454c619b53bc373809154, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.1
