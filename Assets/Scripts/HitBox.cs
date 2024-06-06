@@ -15,6 +15,13 @@ public class HitBox : MonoBehaviour
                 enemy.isDead = true;
                 enemy.disable();
             }
+
+            if (collision.name.Contains("Patrol"))
+            {
+                EnemyPatrol enemy = collision.GetComponent<EnemyPatrol>();
+                enemy.isDead = true;
+                enemy.disable();
+            }
             // Destroy(collision.gameObject);
         }
     }

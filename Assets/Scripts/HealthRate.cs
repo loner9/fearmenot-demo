@@ -15,22 +15,28 @@ public class HealthRate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    public void setHealtLevel (string level) {
+    public void setHealtLevel(string level)
+    {
         var mainModule = particleSystem.main;
 
-        if (level == "high") {
+        if (level == "high")
+        {
             mainModule.startColor = new ParticleSystem.MinMaxGradient(Color.green);
             mainModule.simulationSpeed = 1.0f;
-        } else if (level == "mid") {
-            mainModule.startColor = new ParticleSystem.MinMaxGradient(Color.red);
+        }
+        else if (level == "mid")
+        {
+            mainModule.startColor = new ParticleSystem.MinMaxGradient(Color.yellow);
             mainModule.simulationSpeed = 1.5f;
-        } else {
-            mainModule.startColor = new ParticleSystem.MinMaxGradient(Color.blue);
+        }
+        else
+        {
+            mainModule.startColor = new ParticleSystem.MinMaxGradient(Color.red);
             mainModule.simulationSpeed = 2.0f;
         }
-        
+
     }
 }

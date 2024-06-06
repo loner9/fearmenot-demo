@@ -9,6 +9,7 @@ using UnityEngine.Rendering.Universal;
 public enum interactState { READY, NOT }
 public class PlayerControl : MonoBehaviour
 {
+    PlayerInput playerInput;
     public Rigidbody2D rb;
     [SerializeField] float moveSpeed = 5f;
     [HideInInspector] public float horizontalMovement;
@@ -25,13 +26,18 @@ public class PlayerControl : MonoBehaviour
     private BoxCollider2D hitbox;
     private bool isCoolDown = false;
     private float cdTime = 0.5f;
-
     public float kbForce;
     public float KbCounter;
     public float KbTotalTime;
     public bool knockFromRight;
+    int currentApel;
+    int currentDrink;
+    bool lanterCollected;
+    bool SunShardCollected;
+    bool CompassCollected;
     GameObject playerLight;
     GameController gameController;
+    PlayerHealth health;
 
     [HideInInspector] public bool isIdle = false;
 
@@ -41,21 +47,23 @@ public class PlayerControl : MonoBehaviour
 
     private void Awake()
     {
+        playerInput = GetComponent<PlayerInput>();
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        if (gameController.isLanternCollected)
-        {
-            playerLight.gameObject.SetActive(true);
-        }
+        health = GameObject.Find("PlayerHealth").GetComponent<PlayerHealth>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        stateA();
         cameraFollowObject = cameraFollowGo.GetComponent<CameraFollowObject>();
         hitbox = transform.Find("AttackHitbox").GetComponent<BoxCollider2D>();
         interact = interactState.NOT;
         playerLight = transform.Find("FlashLight").gameObject;
-
+        if (gameController.isLanternCollected)
+        {
+            playerLight.gameObject.SetActive(true);
+        }
     }
 
     // Update is called once per frame
@@ -149,6 +157,14 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
+    public void decreaseHealth(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            health.takeDamage(1, Vector2.left);
+        }
+    }
+
     private bool isGrounded()
     {
         if (Physics2D.OverlapBox(groundCheckPos.position, groundCheckSize, 0, groundLayer))
@@ -222,5 +238,40 @@ public class PlayerControl : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawCube(groundCheckPos.position, groundCheckSize);
+    }
+
+    public void isDead()
+    {
+        playerInput.DeactivateInput();
+        animator.SetTrigger("dead");
+    }
+
+    public void stateA()
+    {
+        gameController.initialPos = transform.position;
+        currentApel = gameController.apelAmount;
+        currentDrink = gameController.drinkAmount;
+        lanterCollected = gameController.isLanternCollected;
+        SunShardCollected = gameController.isSunShardCollected;
+        CompassCollected = gameController.isCompassCollected;
+    }
+
+    public void stateB()
+    {
+        gameController.apelAmount = currentApel;
+        gameController.drinkAmount = currentDrink;
+        gameController.isLanternCollected = lanterCollected;
+        gameController.isSunShardCollected = SunShardCollected;
+        gameController.isCompassCollected = CompassCollected;
+    }
+
+    public void resetState()
+    {
+        playerInput.ActivateInput();
+        animator.Rebind();
+        animator.Update(0f);
+        transform.position = gameController.initialPos;
+        stateB();
+        health.initialState();
     }
 }

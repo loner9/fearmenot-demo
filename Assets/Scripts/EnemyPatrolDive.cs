@@ -125,7 +125,7 @@ public class EnemyPatrolDive : MonoBehaviour
                     player.knockFromRight = false;
                 }
 
-                PlayerHealth playerHealth = collision.collider.GetComponent<PlayerHealth>();
+                PlayerHealth playerHealth = GameObject.Find("PlayerHealth").GetComponent<PlayerHealth>();
                 playerHealth.takeDamage(1, new Vector2(cue, 0f));
             }
             // boxCollider.enabled = false;
@@ -156,6 +156,7 @@ public class EnemyPatrolDive : MonoBehaviour
             {
                 instatiateLoot(item.itemPrefab);
             }
+            break;
         }
     }
 

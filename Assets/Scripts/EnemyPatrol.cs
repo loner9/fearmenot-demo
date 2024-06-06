@@ -15,7 +15,10 @@ public class EnemyPatrol : MonoBehaviour
     public LayerMask playerMask;
     Vector3 direction;
     Animator animator;
+    [HideInInspector] public bool isDead;
     [HideInInspector] public int cue = 1;
+    [Header("Loot")]
+    public List<LootItem> lootTable = new List<LootItem>();
     // Start is called before the first frame update
     void Start()
     {
@@ -24,19 +27,24 @@ public class EnemyPatrol : MonoBehaviour
         animator = GetComponent<Animator>();
         capsuleCollider2D = GetComponent<CapsuleCollider2D>();
         currentPoint = pointB.transform;
+        isDead = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!isHit)
+        if (!isDead)
         {
-            patrol();
+            if (!isHit)
+            {
+                patrol();
+            }
+            else
+            {
+                rb.velocity = Vector2.zero;
+            }
         }
-        else
-        {
-            rb.velocity = Vector2.zero;
-        }
+
     }
 
     void patrol()
@@ -53,14 +61,12 @@ public class EnemyPatrol : MonoBehaviour
 
         if (Vector2.Distance(transform.position, currentPoint.position) < 0.8f && currentPoint == pointB.transform)
         {
-            Debug.Log("is atas");
             currentPoint = pointA.transform;
             flip();
         }
 
         if (Vector2.Distance(transform.position, currentPoint.position) < 0.8f && currentPoint == pointA.transform)
         {
-            Debug.Log("is bawah");
             currentPoint = pointB.transform;
             flip();
         }
@@ -109,7 +115,7 @@ public class EnemyPatrol : MonoBehaviour
                 // Invoke("flip", 0.5f);
                 StartCoroutine(onHitEffect(0.3f));
 
-                PlayerHealth playerHealth = collision.collider.GetComponent<PlayerHealth>();
+                PlayerHealth playerHealth = GameObject.Find("PlayerHealth").GetComponent<PlayerHealth>();
                 playerHealth.takeDamage(2, new Vector2(val, 0));
             }
         }
@@ -135,10 +141,36 @@ public class EnemyPatrol : MonoBehaviour
         Invoke("flip", 0.5f);
 
     }
-    private void OnDrawGizmos()
+
+    public void disable()
     {
-        Gizmos.DrawWireSphere(pointA.transform.position, 0.8f);
-        Gizmos.DrawWireSphere(pointB.transform.position, 0.8f);
-        Gizmos.DrawLine(pointA.transform.position, pointB.transform.position);
+        rb.velocity = Vector2.zero;
+        animator.Play("dead");
+    }
+
+    void begone()
+    {
+        dropItems();
+        Destroy(gameObject);
+    }
+
+    void dropItems()
+    {
+        foreach (LootItem item in lootTable)
+        {
+            if (Random.Range(0f, 100f) <= item.dropChance)
+            {
+                instatiateLoot(item.itemPrefab);
+            }
+            break;
+        }
+    }
+
+    void instatiateLoot(GameObject loot)
+    {
+        if (loot)
+        {
+            Instantiate(loot, transform.position, Quaternion.identity);
+        }
     }
 }

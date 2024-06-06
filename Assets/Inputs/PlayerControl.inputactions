@@ -76,6 +76,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "healthDecr",
+                    "type": "Button",
+                    "id": "2363453a-1c69-4baf-b9e5-dc87eb7082ea",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "healthIncr",
+                    "type": "Button",
+                    "id": "9124d709-4b8d-421e-9868-e55ac39736f6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -318,6 +336,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "PrevChap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5afe7def-1371-48a2-ba6e-fcd9bf45ca65",
+                    "path": "<Keyboard>/minus",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "healthDecr",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ec21e89b-002b-4c72-aef8-f5d9f18d006f",
+                    "path": "<Keyboard>/equals",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "healthIncr",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
