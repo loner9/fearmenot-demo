@@ -49,22 +49,21 @@ public class PauseMenu : MonoBehaviour
 
     public void Pause()
     {
-        // if (!isFirst)
-        // {
-        //     // buttons[0].interactable = true;
-        //     buttons[1].interactable = true;
-        // }
         buttons[2].GetComponent<Button>().Select();
+        PauseMenuPanel.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
+    public void InventoryShortcut()
+    {
+        buttons[4].GetComponent<Button>().Select();
+        Inventory();
         PauseMenuPanel.SetActive(true);
         Time.timeScale = 0f;
     }
 
     public void Resume()
     {
-        // if (!isFirst)
-        // {
-        //     buttons[0].interactable = true;
-        // }
         PauseMenuPanel.SetActive(false);
         Option();
         Time.timeScale = 1f;
