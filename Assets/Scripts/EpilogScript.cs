@@ -58,12 +58,6 @@ public class EpilogScript : MonoBehaviour
 
     void NextLine()
     {
-        if(index == 1) {
-            audioSources[0].Stop();
-            audioSources[1].Play();
-        }
-
-
         if (index < lines.Length - 1)
         {
             FadeOut();
@@ -82,7 +76,7 @@ public class EpilogScript : MonoBehaviour
             StartCoroutine(TypeLine());
             
         } else {
-            audioSources[1].Stop();
+            audioSources[0].Stop();
             gameObject.SetActive(false);
         }
     }
