@@ -21,13 +21,13 @@ public class MainMenu : MonoBehaviour
             switch (scene)
             {
                 case "Chapter1":
-                    SceneController.instance.toLevel(2);
-                    break;
-                case "Chapter2":
                     SceneController.instance.toLevel(3);
                     break;
-                case "BossFight":
+                case "Chapter2":
                     SceneController.instance.toLevel(4);
+                    break;
+                case "BossFight":
+                    SceneController.instance.toLevel(5);
                     break;
                 default:
                     break;

@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
+    path: Assets/Scenes/Lorong.unity
+    guid: c86ec7b690927b2418434ddd9e2333a3
+  - enabled: 1
     path: Assets/Scenes/Chapter1.unity
     guid: bc0cc6f4c1d74d547b933a8a9b16daf8
   - enabled: 1

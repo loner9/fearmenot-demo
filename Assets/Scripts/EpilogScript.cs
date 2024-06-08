@@ -33,7 +33,9 @@ public class EpilogScript : MonoBehaviour
             if (textComponent.text == lines[index])
             {
                 NextLine();
-            } else {
+            }
+            else
+            {
                 StopAllCoroutines();
                 textComponent.text = lines[index];
             }
@@ -49,7 +51,7 @@ public class EpilogScript : MonoBehaviour
 
     IEnumerator TypeLine()
     {
-        foreach (char c in lines[index].ToCharArray()) 
+        foreach (char c in lines[index].ToCharArray())
         {
             textComponent.text += c;
             yield return new WaitForSeconds(textSpeed);
@@ -63,22 +65,34 @@ public class EpilogScript : MonoBehaviour
             FadeOut();
             index++;
 
-            if(lines[index] == ""){
+            if (lines[index] == "")
+            {
                 textBox.gameObject.SetActive(false);
-            } else {
+            }
+            else
+            {
                 textBox.gameObject.SetActive(true);
             }
 
             backgroundComponent.sprite = background[index];
             FadeIn();
-        
+
             textComponent.text = string.Empty;
             StartCoroutine(TypeLine());
-            
-        } else {
+
+        }
+        else
+        {
             audioSources[0].Stop();
             gameObject.SetActive(false);
+            Invoke("toNextScene", 0.2f);
         }
+    }
+
+    void toNextScene()
+    {
+        PlayerPrefs.DeleteAll();
+        SceneController.instance.toLevel(0);
     }
 
     public void FadeIn()
