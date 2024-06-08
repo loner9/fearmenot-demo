@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 public class SceneController : MonoBehaviour
 {
     public static SceneController instance;
-    [SerializeField] Animator transitionAnim;
 
     private void Awake()
     {
@@ -24,9 +23,11 @@ public class SceneController : MonoBehaviour
     {
         Debug.Log("Scene Changed : " + SceneManager.GetActiveScene().name);
         PlayerPrefs.SetString("scene", SceneManager.GetActiveScene().name);
+        GameController gameController = GameObject.Find("GameController").GetComponent<GameController>();
+        PlayerHealth health = GameObject.Find("PlayerHealth").GetComponent<PlayerHealth>();
+
         if (SceneManager.GetActiveScene().name.Equals("Chapter2"))
         {
-            GameController gameController = GameObject.Find("GameController").GetComponent<GameController>();
             gameController.apelAmount = PlayerPrefs.GetInt("apelAmount", 0);
             gameController.drinkAmount = PlayerPrefs.GetInt("drinkAmount", 0);
             bool sun = PlayerPrefs.GetString("sun", "").Equals("True");
@@ -35,6 +36,17 @@ public class SceneController : MonoBehaviour
             gameController.isLanternCollected = lantern;
             gameController.isSunShardCollected = sun;
             Debug.Log(PlayerPrefs.GetInt("apelAmount", 0) + " " + lantern + " " + PlayerPrefs.GetString("lantern", ""));
+            gameController.initialStateB();
+        }
+        if (SceneManager.GetActiveScene().name.Equals("BossFight"))
+        {
+            gameController.apelAmount = PlayerPrefs.GetInt("apelAmount", 0);
+            gameController.drinkAmount = PlayerPrefs.GetInt("drinkAmount", 0);
+            gameController.isLanternCollected = true;
+            gameController.isSunShardCollected = true;
+            gameController.isMagnetCollected = true;
+            gameController.isCompassFixed = true;
+
         }
     }
 

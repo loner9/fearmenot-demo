@@ -17,15 +17,15 @@ public class Drawer : MonoBehaviour
     {
         if (player != null)
         {
-            if (player.interact == interactState.READY)
+            if ((player.interact == interactState.READY) && (trigger != 0))
             {
-                if (trigger != 0)
-                {
-                    player.interact = interactState.NOT;
-                    trigger--;
-                    PauseMenu pauseMenu = GameObject.Find("GameManager").GetComponent<PauseMenu>();
-                    pauseMenu.showBtnDrawer();
-                }
+                // if (trigger != 0)
+                // {
+                player.interact = interactState.NOT;
+                trigger--;
+                PauseMenu pauseMenu = GameObject.Find("GameManager").GetComponent<PauseMenu>();
+                pauseMenu.showBtnDrawer();
+                // }
             }
         }
     }
@@ -35,6 +35,7 @@ public class Drawer : MonoBehaviour
         if (other.GetType() == typeof(CapsuleCollider2D))
         {
             player = other.GetComponent<PlayerControl>();
+            GetComponent<BoxCollider2D>().enabled = false;
             bool isIdle = player.isIdle;
             player.doInteractAct = true;
             if (isIdle)
@@ -53,6 +54,7 @@ public class Drawer : MonoBehaviour
             player = other.GetComponent<PlayerControl>();
             player.doInteractAct = false;
             player.interact = interactState.NOT;
+            GetComponent<BoxCollider2D>().enabled = true;
             Invoke("hide", 0.1f);
         }
     }

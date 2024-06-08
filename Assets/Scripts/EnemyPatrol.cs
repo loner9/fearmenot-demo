@@ -116,7 +116,7 @@ public class EnemyPatrol : MonoBehaviour
                 StartCoroutine(onHitEffect(0.3f));
 
                 PlayerHealth playerHealth = GameObject.Find("PlayerHealth").GetComponent<PlayerHealth>();
-                playerHealth.takeDamage(2, new Vector2(val, 0));
+                playerHealth.takeDamage(3, new Vector2(val, 0));
             }
         }
     }

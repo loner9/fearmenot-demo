@@ -33,7 +33,9 @@ public class PrologScript : MonoBehaviour
             if (textComponent.text == lines[index])
             {
                 NextLine();
-            } else {
+            }
+            else
+            {
                 StopAllCoroutines();
                 textComponent.text = lines[index];
             }
@@ -49,7 +51,7 @@ public class PrologScript : MonoBehaviour
 
     IEnumerator TypeLine()
     {
-        foreach (char c in lines[index].ToCharArray()) 
+        foreach (char c in lines[index].ToCharArray())
         {
             textComponent.text += c;
             yield return new WaitForSeconds(textSpeed);
@@ -58,21 +60,25 @@ public class PrologScript : MonoBehaviour
 
     void NextLine()
     {
-        if(index == 0) {
+        if (index == 0)
+        {
             audioSources[0].Stop();
             audioSources[1].Play();
         }
 
-        if (index == 2) {
+        if (index == 2)
+        {
             audioSources[1].Stop();
             audioSources[2].Play();
         }
 
-        if(index == 6) {
+        if (index == 6)
+        {
             audioSources[3].Play();
         }
 
-        if (index == 9) {
+        if (index == 9)
+        {
             audioSources[2].Stop();
             audioSources[4].Play();
         }
@@ -82,22 +88,33 @@ public class PrologScript : MonoBehaviour
             FadeOut();
             index++;
 
-            if(lines[index] == ""){
+            if (lines[index] == "")
+            {
                 textBox.gameObject.SetActive(false);
-            } else {
+            }
+            else
+            {
                 textBox.gameObject.SetActive(true);
             }
 
             backgroundComponent.sprite = background[index];
             FadeIn();
-        
+
             textComponent.text = string.Empty;
             StartCoroutine(TypeLine());
-            
-        } else {
+
+        }
+        else
+        {
             audioSources[4].Stop();
             gameObject.SetActive(false);
+            Invoke("toNextScene", 0.2f);
         }
+    }
+
+    void toNextScene()
+    {
+        SceneController.instance.nextLevel();
     }
 
     public void FadeIn()

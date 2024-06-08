@@ -35,6 +35,10 @@ public class PlayerControl : MonoBehaviour
     bool lanterCollected;
     bool SunShardCollected;
     bool CompassCollected;
+    bool CompassNeedle;
+    bool CompassFixed;
+
+
     GameObject playerLight;
     GameController gameController;
     PlayerHealth health;
@@ -44,6 +48,7 @@ public class PlayerControl : MonoBehaviour
     [HideInInspector] public bool doInteractAct = false;
 
     public interactState interact;
+    PauseMenu pauseMenu;
 
     private void Awake()
     {
@@ -244,6 +249,13 @@ public class PlayerControl : MonoBehaviour
     {
         playerInput.DeactivateInput();
         animator.SetTrigger("dead");
+
+    }
+
+    public void gameOverScreen()
+    {
+        pauseMenu = GameObject.Find("GameManager").GetComponent<PauseMenu>();
+        pauseMenu.gameOver();
     }
 
     public void stateA()
@@ -271,7 +283,6 @@ public class PlayerControl : MonoBehaviour
         animator.Rebind();
         animator.Update(0f);
         transform.position = gameController.initialPos;
-        stateB();
         health.initialState();
     }
 }

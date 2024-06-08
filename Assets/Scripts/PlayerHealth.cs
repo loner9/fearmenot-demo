@@ -12,20 +12,29 @@ public class PlayerHealth : MonoBehaviour
     public GameObject healthRateContainer;
     public GameObject player;
     HealthRate healthRate;
+
     // Start is called before the first frame update
 
     private void Awake()
     {
         // DontDestroyOnLoad(gameObject);
-        healthRate = GameObject.Find("Particle System").GetComponent<HealthRate>();
-        player = GameObject.Find("Char");
+        if (!PlayerPrefs.GetString("scene", "").Equals("BossFight"))
+        {
+            healthRate = GameObject.Find("Particle System").GetComponent<HealthRate>();
+            player = GameObject.Find("Char");
+        }
+
+        currentHealth = maxHealth;
+        Debug.Log("current " + currentHealth);
     }
 
     void Start()
     {
-        currentHealth = maxHealth;
-        knockBack = player.GetComponent<KnockBack>();
-        playerControl = player.GetComponent<PlayerControl>();
+        if (!PlayerPrefs.GetString("scene").Equals("BossFight"))
+        {
+            knockBack = player.GetComponent<KnockBack>();
+            playerControl = player.GetComponent<PlayerControl>();
+        }
     }
 
     public void takeDamage(int damage, Vector2 hitDirection)
@@ -70,5 +79,20 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
         changeHeartRate();
+    }
+
+    public void setHealth(int amount)
+    {
+        currentHealth = amount;
+    }
+
+    public int getHealth()
+    {
+        return currentHealth;
+    }
+
+    public int getMaxHealth()
+    {
+        return maxHealth;
     }
 }
